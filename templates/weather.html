@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<div class="vh-container">
+<head>
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
+    <title>Explore England Blog</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"></script>
+    <script src="https://api.windy.com/assets/map-forecast/libBoot.js"></script>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="{{ url_for('static', filename='images/logo.gif') }}" alt="Explore England Blog">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('home') }}">Home</a></li>
+                <li><a href="{{ url_for('weather_result') }}">Weather</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+    {% if weather %}
+<div class="dynamic-title">
+    <h1>Weather in {{ weather.location_name }}</h1>
+    <p>Please note message from API string: "Warning: 'The trial API version is for development purposes only.
+        <br>This data is randomly shuffled and slightly modified."</p>
+</div>
+
+    <!-- Display weather data for temp, humidity, pressure, wind_speed, wind_direction, precipitation, precitpitation type -->
+<div class="weather-data">
+    <div class="weather-data-item">
+        <p class="weather-data-heading">Temperature:</p>
+        <p class="weather-data-value">{{ weather.temp }} °C</p>
+    </div>
+
+    <div class="weather-data-item">
+        <p class="weather-data-heading">Humidity:</p>
+        <p class="weather-data-value">{{ weather.humidity }} %</p>
+    </div>
+
+    <div class="weather-data-item">
+        <p class="weather-data-heading">Pressure:</p>
+        <p class="weather-data-value">{{ weather.pressure }} mb</p>
+    </div>
+
+    <div class="weather-data-item">
+        <p class="weather-data-heading">Wind speed:</p>
+        <p class="weather-data-value">{{ weather.wind_speed }} m/s</p>
+    </div>
+
+    <div class="weather-data-item">
+        <p class="weather-data-heading">Wind direction:</p>
+        <p class="weather-data-value">
+            {{ weather.wind_direction }}° ({{ weather.wind_direction_compass }})
+            <span class="wind-arrow-container">
+                <span class="wind-arrow" style="transform: rotate({{ weather.wind_direction }}deg);">&#8593;</span>
+            </span>
+        </p>
+    </div>
+
+    <div class="weather-data-item">
+        <p class="weather-data-heading">Precipitation for last 3 hours:</p>
+        <p class="weather-data-value">{{ weather.precipitation }} mm</p>
+    </div>
+
+    <div class="weather-data-item">
+        <p class="weather-data-heading">Current Precipitation</p>
+        <p class="weather-data-value">{{ weather.ptype }}</p>
+    </div>
+</div>
+
+<!-- Container for the Windy map -->
+    <div id="windy" style="width: 100%;">
+    <script>
+        function adjustWindyHeight() {
+            var headerHeight = document.querySelector('header').offsetHeight;
+            var dynamicTitleHeight = document.querySelector('.dynamic-title').offsetHeight;
+            var weatherDataHeight = document.querySelector('.weather-data').offsetHeight;
+            var footerHeight = document.querySelector('footer').offsetHeight;
+            var totalUsedHeight = headerHeight + dynamicTitleHeight + weatherDataHeight + footerHeight;
+
+            var windowHeight = window.innerHeight;
+            var windyHeight = windowHeight - totalUsedHeight;
+
+            document.getElementById('windy').style.height = windyHeight + 'px';
+
+        const options = {
+            key: '{{ map_key }}',
+            verbose: true,
+            lat: '{{ weather.lat }}',
+            lon: '{{ weather.lon }}',
+            zoom: 12
+        };
+
+        windyInit(options, windyAPI => {
+            const { map } = windyAPI;
+        });
+
+        }
+
+        window.addEventListener('load', adjustWindyHeight);
+        window.addEventListener('resize', adjustWindyHeight);
+       </script>
+    </div>
+        {% else %}
+            <p>No weather data available yet, please return to the home page and make a selection.</p>
+        {% endif %}
+    </main>
+
+    <footer>
+        <p>Copyright Explore England Blog © {{ current_year }}</p>
+    </footer>
+
+
+
+</body>
+
+</div>
+
+</html>
+

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"
+          name="viewport"
+          content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
+    />
+    <title>Explore England Blog</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+    <div class="main-content">
+        <div class="content-container">
+        <h1>Explore England Blog - Weather Portal</h1>
+        <p>Select a location to view the current weather data:</p>
+
+        <form action="/get_weather" method="post">
+            <label for="location">Choose a location:</label>
+            <select name="location" id="location">
+                <option value="Lake District National Park|54.4609,-3.0886">Lake District National Park</option>
+                <option value="Corfe Castle|50.6395,-2.0566">Corfe Castle</option>
+                <option value="The Cotswolds|51.8330,-1.8433">The Cotswolds</option>
+                <option value="Cambridge|52.2053,0.1218">Cambridge</option>
+                <option value="Bristol|51.4545,-2.5879">Bristol</option>
+                <option value="Oxford|51.7520,-1.2577">Oxford</option>
+                <option value="Norwich|52.6309,1.2974">Norwich</option>
+                <option value="Stonehenge|51.1789,-1.8262">Stonehenge</option>
+                <option value="Watergate Bay|50.4429,-5.0553">Watergate Bay</option>
+                <option value="Birmingham|52.4862,-1.8904">Birmingham</option>
+            </select>
+            <input type="submit" value="Get Weather">
+        </form>
+        </div>
+    </div>
+</body>
+
+</html>
+
+
+
