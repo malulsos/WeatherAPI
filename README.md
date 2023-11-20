@@ -8,19 +8,19 @@ This project is a Flask-based web application designed to provide real-time weat
 To set up this project locally, follow these steps:
 
 1. Clone the repository:
-git clone https://github.com/malulsos/WeatherAPI.git
+"git clone https://github.com/malulsos/WeatherAPI.git"
 
 2. Navigate to the project directory:
-cd WeatherAPI
+"cd WeatherAPI"
 
 3. Install required packages:
-pip install -r requirements.txt
+"pip install -r requirements.txt"
 
 ## Usage
 
 Run the application using Flask:
 
-flask run
+"flask run"
 
 The application will start, and you can access it via `http://localhost:5000` in your web browser.
 
