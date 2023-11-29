@@ -2,16 +2,12 @@
 body, h1, p {
     margin: 0;
     padding: 0;
-    overflow-y: hidden;
-}
-
-/* Body styling */
-body {
     font-family: 'Arial', sans-serif;
 }
 
 /* Header */
 header {
+    grid-area: header;
     display: flex;
     align-items: center;
     background-color: #2F8FA4;
@@ -59,14 +55,14 @@ nav a:hover, nav a.active {
 }
 
 /* Main content styling */
-.content, .dynamic-title, .weather-data{
+.content, .dynamic-title, .weather-data, chatbot{
     padding: 20px;
     line-height: 1.6;
     text-align: center;
 }
 
 /* Main content container styling */
-.main-content {
+.index-main-content {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -82,7 +78,7 @@ nav a:hover, nav a.active {
 }
 
 /* Main content heading styling */
-.main-content p {
+.index-main-content p {
     margin-bottom: 10px;
     margin-top: 10px;
 }
@@ -113,17 +109,8 @@ nav a:hover, nav a.active {
     transform: rotate(0deg);
 }
 
-
-/* Main content box styling */
-.main-content h1, .main-content p, .main-content form {
-    background-color: transparent;
-    border-radius: 0;
-}
-
 /* Map container styling */
-.map-container {
-    width: 100%;
-    height: 400px;
+.windy {
     border-radius: 2px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -141,7 +128,7 @@ nav a:hover, nav a.active {
 /* Weather data item styling */
 .weather-data-item {
     display: flex;
-    flex-direction: column; /
+    flex-direction: column;
     align-items: center;
     background-color: #fff;
     padding: 10px;
@@ -192,13 +179,104 @@ input[type="submit"]:hover {
     color: white;
 }
 
+/* Main content area where map and chatbox will be side by side */
+.main-content-area {
+    grid-area: main;
+    display: flex; /* Use flexbox for layout */
+    flex-wrap: wrap; /* Allows items to wrap as needed */
+    align-items: flex-start; /* Aligns children at the start of the cross axis */
+}
+
+/* Adjust the weather content and chatbox to be flex items */
+.weather-content {
+    flex: 3 1 auto; /* Allows boxes to grow and shrink as needed */
+}
+
+/* Chatbot container styling */
+.chatbot-container {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column; /* Stacks the messages and form */
+    justify-content: space-between; /* Aligns children at the start and end */
+    max-width: 30%;
+    min-height: 0;
+    background-color: #f9f9f9;
+    border-radius: 4px;
+    overflow-y: auto;
+    margin-bottom: 40px;
+}
+
+.chatbot {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px #2F8FA4;
+    height: 100%;
+}
+
+/* Align input box and send button to the bottom */
+#chatbot-form {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end; /* Aligns items to the end of the main axis */
+    order: 2;
+    overflow-y: auto;
+}
+
+#chatbot-messages {
+    flex: 0.8;
+    flex-grow: 1;
+    overflow-y: auto;
+    margin-bottom: 10px; /* Provides space between messages and input form */
+    order: 1;
+    overflow-y: auto;
+}
+
+
 /* Footer styling */
 footer {
+    grid-area: footer;
+    height: 40px;
     background-color: #2F8FA4;
     color: white;
-    text-align: left;
-    padding: 10px 10px;
+    text-align: center;
     border-radius: 0 0 2px 2px;
+    margin-top: auto;
+    z-index: 1;
+}
+
+#chatbot-form button {
+    background-color: #2F8FA4; /* Button color */
+    color: white; /* Text color */
+    border: none; /* Removes the default button border */
+    padding: 10px 20px; /* Top/bottom and left/right padding */
+    text-align: center; /* Centers the text */
+    text-decoration: none; /* Removes the default underline */
+    display: inline-block;
+    font-size: 16px; /* Text size */
+    margin: 4px 2px;
+    cursor: pointer; /* Changes the cursor when you hover over the button */
+    border-radius: 12px; /* Rounded corners */
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+#chatbot-form button:hover {
+    background-color: #1a5a6c; /* Darker shade for hover effect */
+}
+
+/* ensure page layout stays consistent when on ultra-wide screens */
+@media (min-width: 2000px) {
+    .page-layout {
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas:
+            "header header"
+            "main chatbot"
+            "footer footer";
+    }
 }
 
 /* Responsive adjustments for the grid */
