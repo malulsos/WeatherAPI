@@ -28,7 +28,6 @@ def extract_weather_query_details(user_input):
         if ent.label_ in ["GPE", "LOC"]:
             city_name = ent.text
         elif ent.label_ == "DATE":
-            # Enhanced date parsing logic
             parsed_date, parsed = try_parse_date(ent.text)
             if parsed:
                 if datetime.today().date() <= parsed_date <= datetime.today().date() + timedelta(days=7):
@@ -38,8 +37,10 @@ def extract_weather_query_details(user_input):
                     time_frame = 'future'
             break
 
-    # Handling relative dates like 'the next day', 'day after tomorrow'
-    if "tomorrow" in user_input.lower():
+    # Handling relative dates like 'today', 'tomorrow', 'day after tomorrow'
+    if "today" in user_input.lower():
+        time_frame = "daily"
+    elif "tomorrow" in user_input.lower():
         time_frame = "tomorrow"
     elif ("next day" in user_input.lower() or "day after tomorrow" in user_input.lower() or "in two days"
           in user_input.lower() or "day after" in user_input.lower()):
@@ -58,17 +59,13 @@ def extract_weather_query_details(user_input):
                 specific_date = parsed_date
                 break
 
-    # Print the extracted details
-    print(f"City Name: {city_name}, Time Frame: {time_frame}, Specific Date: {specific_date}, Max Temp: {max_temp},"
-          f" Min Temp: {min_temp}")
-
     return city_name, time_frame, specific_date, max_temp, min_temp
 
 
 # Function to parse date
 def try_parse_date(date_str):
     try:
-        # First try to parse the date using dateutil's parser
+        # First try to parse the date using dateutil parser
         return parse(date_str, fuzzy=True).date(), True
     except ValueError:
         # If it fails, check if it's a weekday and calculate the next occurrence
@@ -192,7 +189,15 @@ def format_forecast(daily_data, index, date_str):
     condition = map_weather_code_to_condition(daily_data['weather_code'][index])
     max_temp = daily_data['temperature_2m_max'][index]
     min_temp = daily_data['temperature_2m_min'][index]
-    formatted_forecast = f"{date_str}: {condition}, high of {max_temp}, low of {min_temp}"
+
+    # Convert the date string to a datetime object
+    date_obj = datetime.strptime(date_str, '%Y-%m-%d')
+
+    # Format the date in a more conversational style, e.g., "Sunday, December 17"
+    formatted_date = date_obj.strftime('%A, %B %d')
+
+    # Create a formatted string for the forecast
+    formatted_forecast = f"{formatted_date}: {condition}, high of {max_temp}, low of {min_temp}"
     return formatted_forecast
 
 
@@ -242,28 +247,34 @@ def format_weather_response(weather_data, city_name, time_text, specific_date=No
         temp_type = "maximum" if max_temp else "minimum"
         date_str = specific_date.strftime('%Y-%m-%d') if specific_date else "currently"
         if isinstance(weather_data, (int, float)):  # Check if weather_data is just a temperature value
-            return f"The {temp_type} temperature in {city_name} for {date_str} is {weather_data}°C."
+            return f"The {temp_type} temperature in {city_name} for {date_str} is {weather_data}."
         else:
             return "Temperature data not available."
 
     if weather_data is None:
         return "Sorry, I couldn't find any weather data for that location."
 
-        # Formatting for current weather
+    # Formatting for current weather
     elif time_text == "current":
         condition, temperature, precipitation, weather_code = weather_data
         response = f"The current weather in {city_name} is {condition} with a temperature of {temperature}°C."
 
-        # Formatting for hourly weather
+    # Formatting for hourly weather
     elif time_text == "hourly":
         condition, temperature = weather_data
         response = f"The hourly weather forecast for {city_name} is {condition}, with a temperature of {temperature}°C."
 
-        # Formatting for daily weather
+    # Formatting for daily weather
     elif time_text == "daily":
-        response = f"The daily weather forecast for {city_name} is {weather_data}"
+        # extract the different parts of the forecast
+        parts = weather_data.split(': ', 1)[1].split(', ') if ": " in weather_data else [weather_data]
+        condition = parts[0]
+        high_temp = parts[1].split(' ', 2)[-1]
+        low_temp = parts[2].split(' ', 2)[-1]
+        response = (f"The weather forecast for today in {city_name} is {condition} with a high of {high_temp}°C"
+                    f" and a low of {low_temp}°C.")
 
-        # Formatting for tomorrow's weather
+    # Formatting for tomorrow's weather
     elif time_text == "tomorrow":
         # Extracting the different parts of the forecast
         parts = weather_data.split(': ', 1)[1].split(', ') if ": " in weather_data else [weather_data]
@@ -277,7 +288,7 @@ def format_weather_response(weather_data, city_name, time_text, specific_date=No
     elif time_text == "week":
         response = f"The forecast for the next week in {city_name} is {weather_data}"
 
-        # Formatting for a specific date
+    # Formatting for a specific date
     elif time_text == "specific":
         # Split the weather_data to get the condition, high, and low temperatures
         if ": " in weather_data:
@@ -359,6 +370,7 @@ def get_weather_v3(city_name, time_text, specific_date=None, max_temp=False, min
         # Process hourly weather
         elif time_text == "hourly":
             hourly_data = weather_data['hourly']
+            first_hour = hourly_data['time'][0]
             condition = map_weather_code_to_condition(hourly_data['weather_code'][0])
             temperature = hourly_data['temperature_2m'][0]
             return condition, temperature
@@ -366,8 +378,13 @@ def get_weather_v3(city_name, time_text, specific_date=None, max_temp=False, min
         # Process daily weather
         elif time_text == "daily":
             daily_data = weather_data['daily']
-            forecasts = process_time_frame_weather(daily_data, time_text)
-            return "\n".join(forecasts) if forecasts else "No data for selected timeframe."
+            today_date = datetime.today().date().strftime('%Y-%m-%d')
+            for day in daily_data['time']:
+                if day == today_date:
+                    index = daily_data['time'].index(day)
+                    forecast = format_forecast(daily_data, index, day)
+                    return forecast
+            return "No data for selected timeframe."
 
         # Process tomorrow's weather
         elif time_text == "tomorrow":
