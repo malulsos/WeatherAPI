@@ -1,7 +1,9 @@
 # WeatherAPI Project
 
 ## Description
-This project is a Flask-based web application designed to provide real-time weather data. It integrates with Windy.com's Point Forecast API and Map API to display weather information for various locations across England.
+This project is a Flask-based web application designed to provide real-time weather data. It integrates with the Windy.com Point Forecast API and Map API to display weather information for various locations across England. 
+
+It also includes a chatbot built using the chatterbot library to provide real-time weather info conversationally and gets its data from Open-Meteo.
 
 ## Installation
 
