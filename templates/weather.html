@@ -1,125 +1,248 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<div class="vh-container">
 <head>
-    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
+	<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
     <title>Explore England Blog</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"></script>
     <script src="https://api.windy.com/assets/map-forecast/libBoot.js"></script>
 </head>
 <body>
-    <header>
-        <div class="logo">
-            <img src="{{ url_for('static', filename='images/logo.gif') }}" alt="Explore England Blog">
-        </div>
-        <nav>
-            <ul>
-                <li><a href="{{ url_for('home') }}">Home</a></li>
-                <li><a href="{{ url_for('weather_result') }}">Weather</a></li>
-            </ul>
-        </nav>
-    </header>
+        <header>
+            <div class="logo">
+                <img src="{{ url_for('static', filename='images/logo.gif') }}" alt="Explore England Blog">
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="{{ url_for('home') }}">Home</a></li>
+                    <li><a href="{{ url_for('weather_result') }}">Weather</a></li>
+                </ul>
+            </nav>
+        </header>
 
-    <main>
-    {% if weather %}
-<div class="dynamic-title">
-    <h1>Weather in {{ weather.location_name }}</h1>
-    <p>Please note message from API string: "Warning: 'The trial API version is for development purposes only.
-        <br>This data is randomly shuffled and slightly modified."</p>
-</div>
+        <main class="main-content-area">
+            {% if weather %}
+                <div class="weather-content">
+                    <div class="dynamic-title">
+                            <h1>Weather in {{ weather.location_name }}</h1>
+                            <p>Please note message from API string: "Warning: 'The trial API version is for development purposes only.
+                                <br>This data is randomly shuffled and slightly modified."</p>
+                    </div>
 
-    <!-- Display weather data for temp, humidity, pressure, wind_speed, wind_direction, precipitation, precitpitation type -->
-<div class="weather-data">
-    <div class="weather-data-item">
-        <p class="weather-data-heading">Temperature:</p>
-        <p class="weather-data-value">{{ weather.temp }} °C</p>
-    </div>
+                            <!-- Display weather data for temp, humidity, pressure, wind_speed, wind_direction, precipitation, precitpitation type -->
+                            <div class="weather-data">
+                                <div class="weather-data-item">
+                                    <p class="weather-data-heading">Temperature:</p>
+                                    <p class="weather-data-value">{{ weather.temp }} °C</p>
+                                </div>
 
-    <div class="weather-data-item">
-        <p class="weather-data-heading">Humidity:</p>
-        <p class="weather-data-value">{{ weather.humidity }} %</p>
-    </div>
+                                <div class="weather-data-item">
+                                    <p class="weather-data-heading">Humidity:</p>
+                                    <p class="weather-data-value">{{ weather.humidity }} %</p>
+                                </div>
 
-    <div class="weather-data-item">
-        <p class="weather-data-heading">Pressure:</p>
-        <p class="weather-data-value">{{ weather.pressure }} mb</p>
-    </div>
+                                <div class="weather-data-item">
+                                    <p class="weather-data-heading">Pressure:</p>
+                                    <p class="weather-data-value">{{ weather.pressure }} mb</p>
+                                </div>
 
-    <div class="weather-data-item">
-        <p class="weather-data-heading">Wind speed:</p>
-        <p class="weather-data-value">{{ weather.wind_speed }} m/s</p>
-    </div>
+                                <div class="weather-data-item">
+                                    <p class="weather-data-heading">Wind speed:</p>
+                                    <p class="weather-data-value">{{ weather.wind_speed }} m/s</p>
+                                </div>
 
-    <div class="weather-data-item">
-        <p class="weather-data-heading">Wind direction:</p>
-        <p class="weather-data-value">
-            {{ weather.wind_direction }}° ({{ weather.wind_direction_compass }})
-            <span class="wind-arrow-container">
-                <span class="wind-arrow" style="transform: rotate({{ weather.wind_direction }}deg);">&#8593;</span>
-            </span>
-        </p>
-    </div>
+                                <div class="weather-data-item">
+                                    <p class="weather-data-heading">Wind direction:</p>
+                                    <p class="weather-data-value">
+                                        {{ weather.wind_direction }}° ({{ weather.wind_direction_compass }})
+                                        <span class="wind-arrow-container">
+                                            <span class="wind-arrow" style="transform: rotate({{ weather.wind_direction }}deg);">&#8593;</span>
+                                        </span>
+                                    </p>
+                                </div>
 
-    <div class="weather-data-item">
-        <p class="weather-data-heading">Precipitation for last 3 hours:</p>
-        <p class="weather-data-value">{{ weather.precipitation }} mm</p>
-    </div>
+                                <div class="weather-data-item">
+                                    <p class="weather-data-heading">Precipitation for last 3 hours:</p>
+                                    <p class="weather-data-value">{{ weather.precipitation }} mm</p>
+                                </div>
 
-    <div class="weather-data-item">
-        <p class="weather-data-heading">Current Precipitation</p>
-        <p class="weather-data-value">{{ weather.ptype }}</p>
-    </div>
-</div>
+                                <div class="weather-data-item">
+                                    <p class="weather-data-heading">Current Precipitation</p>
+                                    <p class="weather-data-value">{{ weather.ptype }}</p>
+                                </div>
+                            </div>
+                </div>
 
-<!-- Container for the Windy map -->
-    <div id="windy" style="width: 100%;">
+                <!-- Windy map container -->
+                <div id="windy" style= 'width: 70%'></div>
+
+                <aside class="chatbot-container">
+                    <div class = "chatbot">
+                        <div id="chatbot-messages">
+                            <!-- Chat messages go here -->
+                        </div>
+                        <form id="chatbot-form">
+                            <input type="text" id="chatbot-input" placeholder="Ask me about the weather...">
+                            <button type="submit">Send</button>
+                        </form>
+                    </div>
+                </aside>
+            {% else %}
+                <p>No weather data available yet, please return to the home page and make a selection.</p>
+            {% endif %}
+        </main>
+
+        <footer>
+            <p>Copyright Explore England Blog © {{ current_year }}</p>
+        </footer>
+
     <script>
-        function adjustWindyHeight() {
-            var headerHeight = document.querySelector('header').offsetHeight;
-            var dynamicTitleHeight = document.querySelector('.dynamic-title').offsetHeight;
-            var weatherDataHeight = document.querySelector('.weather-data').offsetHeight;
-            var footerHeight = document.querySelector('footer').offsetHeight;
-            var totalUsedHeight = headerHeight + dynamicTitleHeight + weatherDataHeight + footerHeight;
+        // Function to initialize the Windy map
+             function initWindyMap() {
+                const options = {
+                    key: '{{ map_key }}',
+                    verbose: true,
+                    lat: '{{ weather.lat }}',
+                    lon: '{{ weather.lon }}',
+                    zoom: 12
+    };
 
-            var windowHeight = window.innerHeight;
-            var windyHeight = windowHeight - totalUsedHeight;
+                console.log('Initializing Windy map with options:', options);
 
-            document.getElementById('windy').style.height = windyHeight + 'px';
+            try {
+                    windyInit(options, windyAPI => {
+                        const { map } = windyAPI;
+                        console.log("Windy map initialized.");
+                        // Additional setup or event listeners for the map can be added here
+                    });
+                } catch (error) {
+                    console.error('Windy API Error:', error);
+                    alert("The Windy API limit has been exceeded or there's an error. Please try again later.");
+                }
+    };
 
-        const options = {
-            key: '{{ map_key }}',
-            verbose: true,
-            lat: '{{ weather.lat }}',
-            lon: '{{ weather.lon }}',
-            zoom: 12
-        };
+            // Function to initialize the Windy map and adjust the height of the containers
+                function initWindyMap() {
+                    const options = {
+                        key: '{{ map_key }}',
+                        verbose: true,
+                        lat: '{{ weather.lat }}',
+                        lon: '{{ weather.lon }}',
+                        zoom: 12
+                    };
 
-        windyInit(options, windyAPI => {
-            const { map } = windyAPI;
-        });
+                    try {
+                        windyInit(options, windyAPI => {
+                            const { map } = windyAPI;
+                            console.log("Windy map initialized.");
+                            // Additional setup or event listeners for the map can be added here
+                        });
+                    } catch (error) {
+                        console.error('Windy API Error:', error);
+                        alert("The Windy API limit has been exceeded or there's an error. Please try again later.");
+                    }
+                };
 
+            // Function to adjust the height of the Windy map and chatbot container
+                function adjustLayout() {
+                    var headerHeight = document.querySelector('header').offsetHeight;
+                    var dynamicTitleHeight = document.querySelector('.dynamic-title').offsetHeight;
+                    var weatherDataHeight = document.querySelector('.weather-data').offsetHeight;
+                    var footerHeight = document.querySelector('footer').offsetHeight;
+                    var totalUsedHeight = headerHeight + dynamicTitleHeight + weatherDataHeight + footerHeight;
+                    var windowHeight = window.innerHeight;
+                    var availableHeight = windowHeight - totalUsedHeight;
+
+            // Set the Windy map and chatbot container to the available height
+                    var windyElement = document.getElementById('windy');
+                    var chatbotContainer = document.querySelector('.chatbot-container');
+                    windyElement.style.height = availableHeight + 'px';
+                    chatbotContainer.style.height = availableHeight + 'px';
+                }
+
+            // Event listeners for load and resize events
+                window.addEventListener('load', function() {
+                    adjustLayout();
+                    initWindyMap(); // Initialize the map when the window loads
+                });
+
+                 window.addEventListener('resize', adjustLayout);
+
+                 // Function to adjust the height of the chatbot container
+             function adjustChatbotHeight() {
+                var headerHeight = document.querySelector('header').offsetHeight;
+                var dynamicTitleHeight = document.querySelector('.dynamic-title').offsetHeight;
+                var weatherDataHeight = document.querySelector('.weather-data').offsetHeight;
+                var footerHeight = document.querySelector('footer').offsetHeight;
+                var windowHeight = window.innerHeight;
+
+                // Subtract the heights of the header, dynamic title, weather data, and footer from the viewport height
+                var chatbotHeight = windowHeight - headerHeight - dynamicTitleHeight - weatherDataHeight - footerHeight;
+
+                var chatbot = document.querySelector('.chatbot-container');
+                if (chatbot) {
+                    chatbot.style.height = chatbotHeight + 'px';
+                }
         }
 
-        window.addEventListener('load', adjustWindyHeight);
-        window.addEventListener('resize', adjustWindyHeight);
-       </script>
-    </div>
-        {% else %}
-            <p>No weather data available yet, please return to the home page and make a selection.</p>
-        {% endif %}
-    </main>
+            // Adjust chatbot height on load and window resize
+            window.addEventListener('load', adjustChatbotHeight);
+            window.addEventListener('resize', adjustChatbotHeight);
 
-    <footer>
-        <p>Copyright Explore England Blog © {{ current_year }}</p>
-    </footer>
+            window.addEventListener('load', function() {
+                adjustChatbotHeight();
+            });
 
+    // Chatbot code
+        document.getElementById('chatbot-form').addEventListener('submit', function(e) {
+            e.preventDefault(); // This line prevents the default form submission behavior
 
+            var userText = document.getElementById('chatbot-input').value;
+            document.getElementById('chatbot-input').value = '';
+
+            // Create new div elements for the user and bot messages
+            var userMessageDiv = document.createElement('div');
+            userMessageDiv.textContent = 'User: ' + userText;
+            var messagesContainer = document.getElementById('chatbot-messages');
+            messagesContainer.appendChild(userMessageDiv);
+
+            // Fetch the chatbot's response
+            fetch('/handle_chatbot_response', {
+                method: 'POST',
+                body: new URLSearchParams('user_text=' + userText),
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            }).then(response => response.text())
+            .then(text => {
+                var botMessageDiv = document.createElement('div');
+                botMessageDiv.textContent = 'Alfred: ' + text;
+                messagesContainer.appendChild(botMessageDiv);
+
+                // Scroll to the bottom of the messages container
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            });
+        });
+
+    // Get the map and chatbot elements
+        var map = document.querySelector('.weather-content');
+        var chatbot = document.querySelector('.chatbot');
+
+        // Function to set the chatbot height
+        function setChatbotHeight() {
+            var mapHeight = map.offsetHeight;
+            chatbot.style.height = mapHeight + 'px';
+        }
+
+        // Call the function initially
+        setChatbotHeight();
+
+        // Call the function every time the window is resized
+        window.addEventListener('resize', setChatbotHeight);
+
+    </script>
+
+<!-- https://api.openweathermap.org/data/3.0/onecall?lat={lat}&lon={lon}&exclude={part}&appid={API key} -->
 
 </body>
-
-</div>
-
 </html>
-

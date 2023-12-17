@@ -1,18 +1,57 @@
 import os
 import requests
 import math
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import redirect, url_for, session, Response
+from chatterbot import ChatBot
+from chatterbot.trainers import ChatterBotCorpusTrainer
+import nltk
+from datetime import datetime
 
+from sqlalchemy import create_engine
+from sqlalchemy.orm import scoped_session, sessionmaker
+from flask import Flask, render_template, request
 from dotenv import load_dotenv
-load_dotenv()  # This will load all the environment variables from the .env file.
+from chatbot import get_chatbot_response
+
+# Initialize dotenv
+load_dotenv()
+
+# Database engine
+engine = create_engine('sqlite:///my_database.db', connect_args={'check_same_thread': False})
+
+# Database session
+Session = scoped_session(sessionmaker(bind=engine))
+
+# Initialize the chatbot and train it.
+nltk.download('punkt')
+chatbot = ChatBot("WeatherBot")
+trainer = ChatterBotCorpusTrainer(chatbot)
+trainer.train("chatterbot.corpus.english", "corpus/weather_corpus.yml")
 
 # Initialize the Flask application and set the folder for HTML templates.
 app = Flask(__name__, template_folder='templates')
 
 # API keys
 app.secret_key = os.environ.get('SECRET_KEY')
-POINT_FORCAST_API_KEY = os.environ.get('POINT_FORCAST_API_KEY')
+point_forcast_api_key = os.environ.get('point_forcast_api_key')
 map_key = os.environ.get('MAP_KEY')
+open_weather_api_key = os.environ.get('open_weather_api_key')
+
+
+@app.route('/handle_chatbot_response', methods=['POST'])
+def handle_chatbot_response():
+    user_input = request.form['user_text']
+    bot_response = get_chatbot_response(user_input)  # Call the function from chatbot.py
+    response = Response(bot_response)
+    response.headers['Content-Type'] = 'text/plain'
+
+    return response
+
+
+# Database connection
+@app.teardown_appcontext
+def shutdown_session(exception=None):
+    Session.remove()
 
 
 # Function to convert temperature from Kelvin to Celsius.
@@ -135,7 +174,8 @@ def get_weather():
 def weather_result():
     # Retrieve weather data from the session and render the weather result page.
     weather_data = session.get('weather_data', None)
-    return render_template('weather.html', weather=weather_data, map_key=map_key)
+    current_year = datetime.now().year
+    return render_template('weather.html', weather=weather_data, map_key=map_key, current_year=current_year)
 
 
 # Function to fetch weather data from the Windy.com API.
@@ -150,7 +190,7 @@ def fetch_weather_data(latitude, longitude):
         "model": "gfs",
         "parameters": ["temp", "rh", "pressure", "wind", "precip", "ptype"],
         "levels": ["surface"],
-        "key": POINT_FORCAST_API_KEY
+        "key": point_forcast_api_key
     }
     # Make the API request and return the response data.
     response = requests.post(url, json=payload, headers=headers)
@@ -162,5 +202,5 @@ def fetch_weather_data(latitude, longitude):
 
 
 # Run the Flask app
-if __name__ == '__main__':
-    app.run(debug=True)
+if __name__ == "__main__":
+    app.run()
