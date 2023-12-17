@@ -1,0 +1,154 @@
+categories:
+- Weather Inquiry
+
+conversations:
+- - What can you do?
+  - I can provide you with the current weather information and forecasts.
+
+- - Can you do anything else?
+  - I can also provide you with the weather forecast for the next 5 days.
+
+- - Can you give me the weather for this weekend?
+  - Sure, this weekend in your area is looking partly cloudy with highs of 75°C on Saturday and 77°C on Sunday.
+
+- - Will it rain next Tuesday?
+  - There's a chance of showers next Tuesday, with occasional rain expected throughout the day.
+
+- - Is it going to be hot on Friday?
+  - Friday's temperatures are going to be warm, reaching up to 85°C in the afternoon.
+
+- - How cold will it be tomorrow night?
+  - The temperature tomorrow night is expected to drop to around 532°C, so you might want to wear something warm!
+
+- - What's the forecast for the next few days?
+  - Over the next few days, you can expect a mix of sun and clouds, with temperatures ranging from 70 to 80°C.
+
+- - Could you tell me the weather for the next week?
+  - Looking ahead for the week, there's a variety of weather coming up. Expect some sunny days, a couple of overcast ones, and possible rain mid-week.
+
+- - What are the chances of snow this Thursday?
+  - Snow is definitely in the forecast for Thursday, so get your winter gear ready!
+
+- - I need the forecast for the next seven days.
+  - For the next seven days, it looks like a rollercoaster of weather! We've got some sunny days, a chance of thunderstorms mid-week, and it might end with a clear weekend.
+
+- - Will we have a clear sky for stargazing this week?
+  - The best night for stargazing will be this Wednesday when the sky should be clear and the stars bright.
+
+- - Is it safe to plan a picnic for Wednesday?
+  - Wednesday is expected to be clear and sunny, perfect for an outdoor picnic!
+
+- - Do I need an umbrella for Monday?
+  - It wouldn't hurt to carry one. There's a slight chance of drizzle on Monday afternoon.
+
+- - What is the weather in London?
+  - The current weather in London is Overcast, with a temperature of 156°C
+
+- - and what about on saturday
+  - The weather forecast for Saturday in London is sunny, a high temperature of 420°C and a low of -69°C.
+
+- - What will the weather be like today?
+  - Today's weather calls for clear skies with a mild breeze, perfect for an outdoor day.
+
+- - Tell me the weather for the upcoming week?
+  - This week you can expect some variability; sunny on Monday and Tuesday, possible showers Wednesday, and a cool down towards the weekend.
+
+- - Is it going to be warmer tomorrow?
+  - Yes, the temperature is going to rise slightly tomorrow, making it warmer than today.
+
+- - Should I expect frost overnight anytime soon?
+  - Night temperatures are staying above freezing this week, so no frost is expected.
+
+- - I'm going hiking on Wednesday, will the weather hold up?
+  - Wednesday is expected to be sunny with mild winds – great hiking weather!
+
+- - Are we expecting any thunderstorms this week?
+  - There might be thunderstorms coming in late Friday evening, so plan accordingly.
+
+- - What's the weather forecast for the next seven days?
+  - The seven-day forecast shows a mix of weather conditions, from sunny days to potential rain over the weekend.
+
+- - How's the weather looking for Saturday?
+  - Saturday is shaping up to be sunny and warm, with no rain in sight.
+
+- - Will it be windy this week?
+  - Mild winds are expected throughout the week, with gusts picking up slightly on Thursday.
+
+- - Can you provide the temperature highs and lows for the next few days?
+  - Over the next few days, expect highs in the mid-70s and lows in the upper 50s.
+
+- - Do I need to wear sunscreen if I go out tomorrow?
+  - Yes, UV levels will be high tomorrow, so wearing sunscreen is recommended.
+
+- - What are the chances of rain this weekend?
+  - There's a 40% chance of rain on Saturday, but Sunday should be dry.
+
+- - Give me the weather outlook for today.
+  - Today will be partly cloudy with a slight chance of an afternoon shower.
+
+- - Is it a good day for the beach tomorrow?
+  - Absolutely, expect sunny skies and a gentle breeze – perfect beach weather!
+
+- - Will there be any weather warnings I should be aware of this week?
+  - No weather warnings for this week. It looks like it's going to be quite a calm week weather-wise.
+
+- - What will austins weather be tomorrow?
+  - Tomorrow's weather in Austin Texas, will be sunny with a high of 36°C and a low of -69°C.
+
+- - Hi
+  - Hey, How are you today?!
+
+- - Good thanks, and how are you?
+  - I'm doing great, thanks for asking! Please ask me about the weather and ill retrieve live weather data for you!
+
+- - Good thanks, What can you do?
+  - I can provide you with the current weather information and forecasts.
+
+- - Hey
+  - Hey there, How are you today?!
+
+- - What's the weather like today?
+  - Today's weather calls for clear skies with a mild breeze, perfect for an outdoor day.
+
+- - Good thanks, whats the weather today
+  - I cant answer that question unless you give me a location first!
+
+- - Good thanks, whats the weather?
+  - Where and when do you want it for?
+  - for London
+  - On which day?
+  - Tomorrow
+  - The weather forecast for tomorrow in London is sunny, a high temperature of 420°C and a low of -69°C.
+
+- - Ok, well whats the current weather then?
+  - Please provide a location first!
+
+- - Hey there
+  - Hi, How are you today?!
+
+- - Whats the weather
+  - Whats the weather in which location?
+  - In London
+  - For which day?
+  - Today
+  - The current weather in London is Overcast, with a temperature of 156°C
+
+- - Hello
+  - Hi there! Hope you're doing well.
+  - Thanks
+  - How can I help you?
+
+- - What should I wear
+  - It's cool. A long sleeve shirt and a light jacket would be a good idea. No rain expected, so no need for an umbrella.
+  - thanks!
+  - You're welcome. Is there anything else I can help you with?
+
+- - Thanks
+  - You're welcome. Is there anything else I can help you with?
+  - No thanks
+  - Ok, have a great day!
+
+- - Thanks
+  - You're welcome. Is there anything else I can help you with?
+  - Yes that would be great
+  - How can I help you?
