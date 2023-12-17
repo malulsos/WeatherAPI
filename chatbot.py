@@ -469,4 +469,6 @@ def get_chatbot_response(user_input):
 
 # Function to check if the user input is a weather query
 def is_weather_query(user_input):
-    return 'weather' in user_input.lower() or any(ent.label_ in ["GPE", "LOC", "DATE"] for ent in nlp(user_input).ents)
+    weather_keywords = ["weather", "temperature", "temp", "forecast", "climate"]
+    return any(keyword in user_input.lower() for keyword in weather_keywords) or \
+           any(ent.label_ in ["GPE", "LOC", "DATE"] for ent in nlp(user_input).ents)
